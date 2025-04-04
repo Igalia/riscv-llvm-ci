@@ -1,0 +1,34 @@
+name: Publish site
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '12,32,52 * * * *'
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the site
+      run: |
+        mkdir _site
+        ./bot-dashboard.py > _site/index.html
+        cp -a igalia.svg rise.svg _site
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
