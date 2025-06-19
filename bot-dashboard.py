@@ -344,6 +344,7 @@ $ endfor
 """
 
 riscv_bots = [
+BotInfo(210, "clang-riscv-gauntlet", "staging", "Rapidly tests a range of configs (rva20, rva22, rva23, rva23-evl, rva23-mrvv-vec-bits), relying on other bots for more detailed tests"),
 BotInfo(87, "clang-riscv-rva20-2stage", "production", "Cross-compiled Clang, from x86_64 host to RVA20, with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(132, "clang-riscv-rva23-evl-vec-2stage", "production", "Cross-compiled Clang, from x86_64 host to RVA23 (with evl tail folding force enabled), with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(26, "clang-riscv-rva23-2stage", "staging", "RVA23 clang two-stage bootstrap and check-all running fully in qemu-system"),
