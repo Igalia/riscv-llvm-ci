@@ -344,12 +344,12 @@ $ endfor
 """
 
 riscv_bots = [
-BotInfo(210, "clang-riscv-gauntlet", "staging", "Rapidly tests a range of configs (rva20, rva22, rva23, rva23-evl, rva23-mrvv-vec-bits), relying on other bots for more detailed tests"),
+BotInfo(210, "clang-riscv-gauntlet", "production", "Rapidly tests a range of configs (rva20, rva22, rva23, rva23-evl, rva23-mrvv-vec-bits), relying on other bots for more detailed tests"),
 BotInfo(87, "clang-riscv-rva20-2stage", "production", "Cross-compiled Clang, from x86_64 host to RVA20, with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(26, "clang-riscv-rva23-2stage", "staging", "RVA23 clang two-stage bootstrap and check-all running fully in qemu-system"),
-BotInfo(213, "clang-riscv-rva23-zvl512b-2stage", "staging", "Cross-compiled Clang, from x86_64 host to rva23u64_zvl512b, with check-all and llvm-test-suite running under qemu-system"),
-BotInfo(212, "clang-riscv-rva23-zvl1024b-2stage", "staging", "Cross-compiled Clang, from x86_64 host to rva23u64_zvl1024b, with check-all and llvm-test-suite running under qemu-system"),
-BotInfo(215, "clang-riscv-x60-mrvv-vec-bits-2stage", "staging", "Cross-compiled Clang, from x86_64 host to -mcpu=spacemit-x60 -mrvv-vec-bits=zvl, with check-all and llvm-test-suite running under qemu-system"),
+BotInfo(212, "clang-riscv-rva23-zvl512b-2stage", "production", "Cross-compiled Clang, from x86_64 host to rva23u64_zvl512b, with check-all and llvm-test-suite running under qemu-system"),
+BotInfo(213, "clang-riscv-rva23-zvl1024b-2stage", "production", "Cross-compiled Clang, from x86_64 host to rva23u64_zvl1024b, with check-all and llvm-test-suite running under qemu-system"),
+BotInfo(214, "clang-riscv-x60-mrvv-vec-bits-2stage", "production", "Cross-compiled Clang, from x86_64 host to -mcpu=spacemit-x60 -mrvv-vec-bits=zvl, with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(132, "clang-riscv-rva23-evl-vec-2stage", "production", "Cross-compiled Clang, from x86_64 host to RVA23 (with evl tail folding force enabled), with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(188, "libc-riscv64-debian-dbg", "production", "LLVM libc RV64 build and tests running on physical hardware"),
 BotInfo(183, "libc-riscv64-debian-fullbuild-dbg", "production", "LLVM libc RV64 build and tests running on physical hardware"),
