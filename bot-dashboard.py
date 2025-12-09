@@ -352,7 +352,6 @@ BotInfo(213, "clang-riscv-rva23-zvl1024b-2stage", "production", "Cross-compiled 
 BotInfo(214, "clang-riscv-x60-mrvv-vec-bits-2stage", "production", "Cross-compiled Clang, from x86_64 host to -mcpu=spacemit-x60 -mrvv-vec-bits=zvl, with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(132, "clang-riscv-rva23-evl-vec-2stage", "production", "Cross-compiled Clang, from x86_64 host to RVA23 (with evl tail folding enabled), with check-all and llvm-test-suite running under qemu-system"),
 BotInfo(188, "libc-riscv64-debian-dbg", "production", "LLVM libc RV64 build and tests running on physical hardware"),
-BotInfo(183, "libc-riscv64-debian-fullbuild-dbg", "production", "LLVM libc RV64 build and tests running on physical hardware"),
 BotInfo(196, "libc-riscv32-qemu-yocto-fullbuild-dbg", "production", "LLVM libc RV32 build and tests running by transferring each test to a Yocto build on qemu-system emulating RV32")
 ]
 

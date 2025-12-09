@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISC-V LLVM CI status</title>
+    <style>
+      :root {
+        --color-text: #000000;
+        --color-text-secondary: #4b5563;
+        --color-background: #ffffff;
+        --color-border: #e5e7eb;
+        --color-hover: #f9fafb;
+        --color-link-underline: #aaa;
+        --color-status-pass: #10b981;
+        --color-status-fail: #ef4444;
+        --color-status-in-progress: #f59e0b;
+        --color-status-other: #ec4899;
+        --font-mono: monospace;
+        --font-sans: Cantarell, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --font-size-sm: 0.875rem;
+        --font-size-lg: 1.5rem;
+        --space-xs: 0.1em;
+        --space-sm: 0.15em;
+        --space-md: 0.5rem;
+        --space-lg: 0.75rem;
+        --space-xl: 1rem;
+        --space-2xl: 1.5rem;
+        --space-3xl: 2rem;
+        --status-indicator-size: 8px;
+      }
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        font-family: var(--font-sans);
+        color: var(--color-text);
+        background-color: var(--color-background);
+        line-height: 1.5;
+      }
+      body {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: var(--space-3xl) var(--space-xl);
+      }
+      h1 {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        margin-bottom: var(--space-2xl);
+      }
+      a {
+        color:inherit;
+        text-decoration:underline;
+        text-decoration-color: var(--color-link-underline);
+        text-underline-offset: var(--space-sm);
+      }
+      a:hover {
+        text-decoration-thickness:2px;
+      }
+      code, .build-number {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+      }
+      .text-secondary {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+      }
+      .dashboard {
+        width: 100%;
+        overflow-x: auto;
+        margin: var(--space-2xl) 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--font-size-sm);
+        table-layout: fixed;
+      }
+      th, td {
+        padding: var(--space-lg) var(--space-xl);
+        text-align: left;
+        border-bottom: 1px solid var(--color-border);
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+      th {
+        font-weight: 600;
+      }
+      tr:hover {
+        background-color: var(--color-hover);
+      }
+      .status-pass::before,
+      .status-fail::before,
+      .status-in_progress::before,
+      .status-other::before {
+        content: "";
+        display: inline-block;
+        width: var(--status-indicator-size);
+        height: var(--status-indicator-size);
+        border-radius: 50%;
+        margin-right: var(--space-md);
+      }
+      .status-pass::before {
+        background-color: var(--color-status-pass);
+      }
+      .status-fail::before {
+        background-color: var(--color-status-fail);
+      }
+      .status-in_progress::before {
+        background-color: var(--color-status-in-progress);
+      }
+      .status-other::before {
+        background-color: var(--color-status-other);
+      }
+      summary {
+        cursor: pointer;
+      }
+      footer {
+        margin-top: var(--space-2xl);
+      }
+      .little-logo {
+        max-height: 1em;
+        vertical-align: middle;
+        margin-left: var(--space-xs);
+      }
+    </style>
+    <script defer>
+      document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('span.utc-time').forEach(span => {
+        const text = span.textContent.trim();
+        const [date, time] = text.split(' ');
+        if (date && time) {
+          const [year, month, day] = date.split('-');
+          const [hour, minute] = time.split(':');
+          if (year && month && day && hour && minute) {
+            const utcDate = new Date(Date.UTC(
+              parseInt(year),
+              parseInt(month) - 1,
+              parseInt(day),
+              parseInt(hour),
+              parseInt(minute)
+            ));
+            span.textContent =
+              utcDate.getFullYear() + '-' +
+              String(utcDate.getMonth() + 1).padStart(2, '0') + '-' +
+              String(utcDate.getDate()).padStart(2, '0') + ' ' +
+              String(utcDate.getHours()).padStart(2, '0') + ':' +
+              String(utcDate.getMinutes()).padStart(2, '0');
+          }
+        }
+      });
+
+        const notice = document.getElementById('timezone-notice');
+        if (notice) {
+          notice.textContent = 'All times were recalculated in your local timezone (' +
+                                Intl.DateTimeFormat().resolvedOptions().timeZone + ').';
+        }
+      });
+    </script>
+</head>
+<body>
+    <h1>RISC-V LLVM CI status</h1>
+    <p class="text-secondary">Generated at <span class="utc-time">2025-06-23 12:41</span>. <span id="timezone-notice">All times are given in UTC.</span> Regenerated approximately every 20 minutes.</p>
+
+    <div class="dashboard">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bot</th>
+                    <th>In progress build</th>
+                    <th>Previous build</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/staging/#/builders/210">clang-riscv-gauntlet</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Rapidly tests a range of configs (rva20, rva22, rva23, rva23-evl, rva23-mrvv-vec-bits), relying on other bots for more detailed tests. Results reported to the staging buildbot coordinator.
+                      </details>
+                     </td>
+                    <td></td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/staging/#/builders/210/builds/154">#154</a></div>
+                        <div class="text-secondary">21m · <span class="utc-time">2025-06-23 12:08</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/buildbot/#/builders/87">clang-riscv-rva20-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Cross-compiled Clang, from x86_64 host to RVA20, with check-all and llvm-test-suite running under qemu-system. Results reported to the production buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/buildbot/#/builders/87/builds/1932">#1932</a></span>
+                    <div class="text-secondary">46m ago</div>
+                    </td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/buildbot/#/builders/87/builds/1931">#1931</a></div>
+                        <div class="text-secondary">1h36m · <span class="utc-time">2025-06-23 11:55</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/staging/#/builders/26">clang-riscv-rva23-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        RVA23 clang two-stage bootstrap and check-all running fully in qemu-system. Results reported to the staging buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/staging/#/builders/26/builds/666">#666</a></span>
+                    <div class="text-secondary">8h31m ago</div>
+                    </td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/staging/#/builders/26/builds/665">#665</a></div>
+                        <div class="text-secondary">12h10m · <span class="utc-time">2025-06-23 04:10</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/staging/#/builders/213">clang-riscv-rva23-zvl512b-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Cross-compiled Clang, from x86_64 host to rva23u64_zvl512b, with check-all and llvm-test-suite running under qemu-system. Results reported to the staging buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/staging/#/builders/213/builds/4">#4</a></span>
+                    <div class="text-secondary">1h30m ago</div>
+                    </td>
+                    <td>
+                        <div class="status-fail build-number"><a href="https://lab.llvm.org/staging/#/builders/213/builds/3">#3</a></div>
+                        <div class="text-secondary">45m · <span class="utc-time">2025-06-23 11:11</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/staging/#/builders/212">clang-riscv-rva23-zvl1024b-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Cross-compiled Clang, from x86_64 host to rva23u64_zvl1024b, with check-all and llvm-test-suite running under qemu-system. Results reported to the staging buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/staging/#/builders/212/builds/2">#2</a></span>
+                    <div class="text-secondary">1h34m ago</div>
+                    </td>
+                    <td>
+                        <div class="status-fail build-number"><a href="https://lab.llvm.org/staging/#/builders/212/builds/1">#1</a></div>
+                        <div class="text-secondary">51m · <span class="utc-time">2025-06-23 11:07</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/staging/#/builders/215">clang-riscv-x60-mrvv-vec-bits-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Cross-compiled Clang, from x86_64 host to -mcpu=spacemit-x60 -mrvv-vec-bits=zvl, with check-all and llvm-test-suite running under qemu-system. Results reported to the staging buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/staging/#/builders/215/builds/1">#1</a></span>
+                    <div class="text-secondary">7m ago</div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/buildbot/#/builders/132">clang-riscv-rva23-evl-vec-2stage</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        Cross-compiled Clang, from x86_64 host to RVA23 (with evl tail folding force enabled), with check-all and llvm-test-suite running under qemu-system. Results reported to the production buildbot coordinator.
+                      </details>
+                     </td>
+                    <td>
+                        <span class="status-in_progress build-number"><a href="https://lab.llvm.org/buildbot/#/builders/132/builds/1558">#1558</a></span>
+                    <div class="text-secondary">49m ago</div>
+                    </td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/buildbot/#/builders/132/builds/1557">#1557</a></div>
+                        <div class="text-secondary">2h0m · <span class="utc-time">2025-06-23 11:52</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/buildbot/#/builders/188">libc-riscv64-debian-dbg</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        LLVM libc RV64 build and tests running on physical hardware. Results reported to the production buildbot coordinator.
+                      </details>
+                     </td>
+                    <td></td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/buildbot/#/builders/188/builds/15978">#15978</a></div>
+                        <div class="text-secondary">9m · <span class="utc-time">2025-06-23 11:40</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/buildbot/#/builders/183">libc-riscv64-debian-fullbuild-dbg</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        LLVM libc RV64 build and tests running on physical hardware. Results reported to the production buildbot coordinator.
+                      </details>
+                     </td>
+                    <td></td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/buildbot/#/builders/183/builds/15036">#15036</a></div>
+                        <div class="text-secondary">4m · <span class="utc-time">2025-06-23 11:30</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      <a href="https://lab.llvm.org/buildbot/#/builders/196">libc-riscv32-qemu-yocto-fullbuild-dbg</a>
+                      <details class="text-secondary">
+                        <summary>Info</summary>
+                        LLVM libc RV32 build and tests running by transferring each test to a Yocto build on qemu-system emulating RV32. Results reported to the production buildbot coordinator.
+                      </details>
+                     </td>
+                    <td></td>
+                    <td>
+                        <div class="status-pass build-number"><a href="https://lab.llvm.org/buildbot/#/builders/196/builds/9323">#9323</a></div>
+                        <div class="text-secondary">28m · <span class="utc-time">2025-06-23 11:59</span></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="text-secondary">
+    This dashboard and the <code>clang-*</code> bots operated by <a href="https://www.igalia.com/">Igalia<img src="igalia.svg" class="little-logo"></a>, supported by <a href="https://riseproject.dev/">RISE<img src="rise.svg" class="little-logo"></a>.
+    </footer>
+</body>
+</html>
+
